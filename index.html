@@ -6,6 +6,17 @@
 <script src="headtrackr.js"></script>
 <canvas id="inputCanvas" style="display:none"></canvas>
 <video id="inputVideo" autoplay loop></video>
+<div id="output">
+  <div id="xOutput">x</div>
+  <div id="yOutput">y</div>
+  <div id="zOutput">z</div>
+</div>
+
+<div id="art">
+  <div id="layer3"></div>
+  <div id="layer2"></div>
+  <div id="layer1"></div>
+</div>
 <script type="text/javascript">
   var videoInput = document.getElementById('inputVideo');
   var canvasInput = document.getElementById('inputCanvas');
@@ -14,10 +25,79 @@
   htracker.init(videoInput, canvasInput);
   htracker.start();
 
+  var vals = {
+    x: {max: 0, min: 0},
+    y: {max: 0, min: 0},
+    z: {max: 0, min: 0}
+  }
+  var vals1 = {
+    x: {
+      pos: {max: 0, min: 0},
+      neg: {max: 0, min: 0}
+    },
+    y: {
+      pos: {max: 0, min: 0},
+      neg: {max: 0, min: 0}
+    },
+    z: {
+      pos: {max: 0, min: 0},
+      neg: {max: 0, min: 0}
+    }
+  }
+  
+  var eles = {
+    x: document.getElementById('xOutput'),
+    y: document.getElementById('yOutput'),
+    z: document.getElementById('zOutput')
+  }
 
-    document.addEventListener('headtrackingEvent', function (event) {
+  function lessThan (a, b) {
+    return (b < a) ? b : a;
+  }
+  function greaterThan (a, b) {
+    return (b > a) ? b : a;
+  }
+  function getPosition (val, max, min) {
+    if (min < 0)
+      max = max + min;
+    else if (min > 0)
+      max = max - min;
+
+    return val / max * 100 + '%';
+  }
+  function normalize (event) {
+    for (el in vals) {
+      let value = event[el];
+
+      let max = greaterThan(vals[el].max, value);
+      let min = lessThan(vals[el].min, value);
+      let width = getPosition(value, max, min);
+
+      vals[el].max = max;
+      vals[el].min = min;
+
+      let prop;
+      if (el == 'x') {
+        prop = (width > 0) ? 'left' : 'right';
+      }
+      else if (el == 'y') {
+        prop = (width > 0) ? 'bottom' : 'right';
+      }
+      
+      eles[el].style[prop] = width;
+      if (width < 0)
+        eles[el].className = "negative";
+    }
+  }
+  function logEvent (event) {
+    normalize(event);
+
+    console.log(event);
+  }
+
+  document.addEventListener('headtrackingEvent', function (event) {
   setTimeout(function(){
-      console.log(event);
+        logEvent(event);
       }, 3000);
     })
 

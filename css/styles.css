@@ -2,3 +2,56 @@ video#inputVideo {
     width: 100%;
     height: 100%;
 }
+#output div {
+    color: #000;
+    font-size: 10px;
+    text-transform: uppercase;
+    height: 10px;
+    width: 10px;
+    position: relative;
+    top: 120px;
+    left: 120px;
+}
+#output {
+    height: 250px;
+    width: 250px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #fff;
+}
+#xOutput {
+    background: orangered;
+}
+#xOutput.negative {
+    right: 125px;
+}
+#yOutput {
+    background: darkred;
+}
+#zOutput {
+    background: indianred;
+}
+
+
+#art,
+#art > div {
+    width: 400px;
+    height: 400px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+}
+#art {
+    position: relative;
+}
+#layer1 {
+    background-image: url(../img/layer1.png);
+}
+#layer2 {
+    background-image: url(../img/layer2.png);
+}
+#layer3 {
+    background-image: url(../img/layer3.png);
+}
